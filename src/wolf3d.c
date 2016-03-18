@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:53:35 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/18 15:46:58 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 18:59:21 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		ft_move(int keycode, t_env *e)
 
 int ft_hook_key(int keycode, t_env *e)
 {
-	ft_printf("KEYCODE: '%d'\n", keycode);
+	//ft_printf("KEYCODE: '%d'\n", keycode);
 	if (keycode == 53)
 		exit(0);
 	else if (keycode == LEFT_KEY
@@ -146,8 +146,9 @@ int				main(/*int argc, char **argv*/)
 	env.frame.current = 0;
 	ft_memcpy(env.map, map, sizeof(map));
 
+	srand(time(NULL));
 	ft_draw_reload(&env);
-
+//	printf("BG : '%s'\n",ft_draw_floor_sky(&env));
 	//mlx_key_hook(env.win, ft_hook_key, &env);
 	//	ft_draw_reload(&env);
 	mlx_loop_hook(env.mlx, ft_draw_reload, &env);

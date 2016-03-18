@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:54:42 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/18 14:45:06 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 18:43:12 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ typedef struct	s_frame
 
 typedef struct s_env
 {
+	char		*fps;
+	char		*background;
 	void		*mlx;
 	void		*win;
 	t_img		image;
@@ -99,5 +101,6 @@ typedef struct s_env
 */
 void			ft_draw_point(t_point point, int color, t_env *e);
 int				ft_draw_reload(t_env *e);
+void			ft_draw_floor_sky(t_env *e);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:59:11 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/18 16:45:18 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 19:11:33 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ void	ft_draw_line(t_point v0, t_point v1, int color, t_env *env)
 	}
 }
 
-void			ft_draw(t_env *e)
+void			ft_draw_floor_sky(t_env *e)
 {
 	int	x;
 	int	y;
 	int	c;
+
 	x = 0;
 	while (x < WIN_WIDTH)
 	{
@@ -52,12 +53,25 @@ void			ft_draw(t_env *e)
 		{
 			if (y < WIN_HEIGHT / 2.0)
 			{
-				c = 0x0000ff;
-				ft_draw_point((t_point){x, y}, c, e);
+				c = 0x301860;
+				if (rand() % 20000 == 0)
+				{
+					ft_draw_point((t_point){x, y}, 0xffffe0, e);
+					ft_draw_point((t_point){x - 1, y}, 0xffffe0, e);
+					ft_draw_point((t_point){x, y - 1}, 0xffffe0, e);
+					ft_draw_point((t_point){x - 1, y - 1}, 0xffffe0, e);
+					ft_draw_point((t_point){x - 2, y}, 0xffffe0, e);
+					ft_draw_point((t_point){x, y - 2}, 0xffffe0, e);
+					ft_draw_point((t_point){x - 2, y - 2}, 0xffffe0, e);
+					ft_draw_point((t_point){x - 2, y - 1}, 0xffffe0, e);
+					ft_draw_point((t_point){x - 1, y - 2}, 0xffffe0, e);
+				}
+				else
+					ft_draw_point((t_point){x, y}, c, e);
 			}
 			else
 			{
-				c = 0xffffff;
+				c = 0xb3b3b3;
 				int r = ((c >> 16 ) & 0xFF) - ((y - WIN_HEIGHT / 2));
 				int g = ((c >> 8 ) & 0xFF) - ((y - WIN_HEIGHT / 2));
 				int b = (c & 0xFF) - ((y - WIN_HEIGHT / 2));
@@ -69,7 +83,52 @@ void			ft_draw(t_env *e)
 		}
 		x++;
 	}
+}
+
+void			ft_mini_map(t_env *e)
+{
+	int	x;
+	int	y;
+
 	x = 0;
+	while (x < 24)
+	{
+		y = 0;
+		while (y < 24)
+		{
+			if (e->map[x][y] != 0)
+			{
+				ft_draw_point((t_point){x * 4, y * 4}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4 + 1, y * 4}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4, y * 4 + 1}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4 + 1, y * 4 + 1}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4, y * 4 + 2}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4 + 2, y * 4}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4 + 2, y * 4 + 2}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4 + 1, y * 4 + 2}, 0xffffff, e);
+				ft_draw_point((t_point){x * 4 + 2, y * 4 + 1}, 0xffffff, e);
+			}
+			y++;
+		}
+		x++;
+	}
+	ft_draw_point((t_point){(int)e->p.pos.x * 4, (int)e->p.pos.y * 4}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4 + 1, (int)e->p.pos.y * 4}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4, (int)e->p.pos.y * 4 + 1}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4 + 1, (int)e->p.pos.y * 4 + 1}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4, (int)e->p.pos.y * 4 + 2}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4 + 2, (int)e->p.pos.y * 4}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4 + 2, (int)e->p.pos.y * 4 + 2}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4 + 1, (int)e->p.pos.y * 4 + 2}, 0xff0000, e);
+	ft_draw_point((t_point){(int)e->p.pos.x * 4 + 2, (int)e->p.pos.y * 4 + 1}, 0xff0000, e);
+}
+
+void			ft_draw(t_env *e)
+{
+	int	x;
+
+	x = 0;
+	ft_draw_floor_sky(e);
 	while (x < WIN_WIDTH)
 	{
 		double	cameraX = 2 * x / (double)WIN_WIDTH - 1;
@@ -155,16 +214,16 @@ void			ft_draw(t_env *e)
 		int g = ((color >> 8 ) & 0xFF) - (dist * 8);
 		int b = (color & 0xFF) - (dist * 8);
 		color = (((r > 0) ? r : 0) << 16) + (((g > 0) ? g : 0) << 8) + ((b > 0) ? b : 0);
-
 		ft_draw_line((t_point){x, drawStart}, (t_point){x, drawEnd}, color, e);
 		x++;
 	}
 	e->frame.previous = e->frame.current;
 	e->frame.current = (double)clock();
 	double frameTime = (e->frame.current - e->frame.previous) / CLOCKS_PER_SEC; 
-	printf("FPS: '%f'\n", (1.0 / frameTime));
+	e->fps = ft_strjoin_free(ft_strdup("FPS: "), ft_itoa(1.0 / frameTime));
 	e->p.speed.move = frameTime * MOVE_SPEED;
 	e->p.speed.rot = frameTime * ROT_SPEED;
+	ft_mini_map(e);
 }
 
 int				ft_draw_reload(t_env *e)
@@ -174,8 +233,8 @@ int				ft_draw_reload(t_env *e)
 			&(e->image.sizeline), &(e->image.endian));
 	ft_draw(e);
 	mlx_put_image_to_window(e->mlx, e->win, e->image.img, 0, 0);
+	mlx_string_put(e->mlx, e->win, WIN_WIDTH - 100, 10, 0xffffff, e->fps);
 	mlx_destroy_image(e->mlx, e->image.img);
-
 	return (0);
 }
 
