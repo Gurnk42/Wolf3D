@@ -6,33 +6,52 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:53:35 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/17 23:04:11 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 15:46:58 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
+static void	ft_move_left(t_env *e)
+{
+	double last_dir_x;
+	double last_cam_x;
 
-static void	ft_move(int keycode, t_env *e)
+	last_dir_x = e->p.dir.x;
+	e->p.dir.x = e->p.dir.x * cos(e->p.speed.rot) - e->p.dir.y
+		* sin(e->p.speed.rot);
+	e->p.dir.y = last_dir_x * sin(e->p.speed.rot) + e->p.dir.y
+		* cos(e->p.speed.rot);
+	last_cam_x = e->p.cam.x;
+	e->p.cam.x = e->p.cam.x * cos(e->p.speed.rot) - e->p.cam.y
+		* sin(e->p.speed.rot);
+	e->p.cam.y = last_cam_x * sin(e->p.speed.rot) + e->p.cam.y
+		* cos(e->p.speed.rot);
+}
+
+static void	ft_move_right(t_env *e)
+{
+	double last_dir_x;
+	double last_cam_x;
+
+	last_dir_x	= e->p.dir.x;
+	e->p.dir.x = e->p.dir.x * cos(-(e->p.speed.rot)) - e->p.dir.y
+		* sin(-(e->p.speed.rot));
+	e->p.dir.y = last_dir_x * sin(-(e->p.speed.rot)) + e->p.dir.y
+		* cos(-(e->p.speed.rot));
+	last_cam_x = e->p.cam.x;
+	e->p.cam.x = e->p.cam.x * cos(-(e->p.speed.rot)) - e->p.cam.y
+		* sin(-(e->p.speed.rot));
+	e->p.cam.y = last_cam_x	* sin(-(e->p.speed.rot)) + e->p.cam.y
+		* cos(-(e->p.speed.rot));
+}
+
+void		ft_move(int keycode, t_env *e)
 {
 	if (keycode == LEFT_KEY)
-	{
-		double oldDirX = e->p.dir.x;
-		e->p.dir.x = e->p.dir.x * cos(e->p.speed.rot) - e->p.dir.y * sin(e->p.speed.rot);
-		e->p.dir.y = oldDirX * sin(e->p.speed.rot) + e->p.dir.y * cos(e->p.speed.rot);
-		double oldPlaneX = e->p.cam.x;
-		e->p.cam.x = e->p.cam.x * cos(e->p.speed.rot) - e->p.cam.y * sin(e->p.speed.rot);
-		e->p.cam.y = oldPlaneX * sin(e->p.speed.rot) + e->p.cam.y * cos(e->p.speed.rot);
-	}
+		ft_move_left(e);
 	else if (keycode == RIGHT_KEY)
-	{
-		double oldDirX = e->p.dir.x;
-		e->p.dir.x = e->p.dir.x * cos(-(e->p.speed.rot)) - e->p.dir.y * sin(-(e->p.speed.rot));
-		e->p.dir.y = oldDirX * sin(-(e->p.speed.rot)) + e->p.dir.y * cos(-(e->p.speed.rot));
-		double oldPlaneX = e->p.cam.x;
-		e->p.cam.x = e->p.cam.x * cos(-(e->p.speed.rot)) - e->p.cam.y * sin(-(e->p.speed.rot));
-		e->p.cam.y = oldPlaneX * sin(-(e->p.speed.rot)) + e->p.cam.y * cos(-(e->p.speed.rot));
-	}
+		ft_move_right(e);
 	else if (keycode == DOWN_KEY)
 	{
 		if (e->map[(int)(e->p.pos.x - e->p.dir.x * e->p.speed.move)][(int)(e->p.pos.y)] == 0)
@@ -101,11 +120,11 @@ int				main(/*int argc, char **argv*/)
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-		{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-		{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+		{1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
+		{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+		{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -113,13 +132,13 @@ int				main(/*int argc, char **argv*/)
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 	env.p = (t_player){{}, {POS_X, POS_Y}, {DIR_X, DIR_Y}, {CAM_X, CAM_Y}};

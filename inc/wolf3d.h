@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:54:42 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/17 23:00:52 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 14:45:06 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 # include <mlx.h>
 # include <fcntl.h>
 
-# define WIN_WIDTH 500
-# define WIN_HEIGHT 500
+# define WIN_WIDTH 1024//2560
+# define WIN_HEIGHT 720//1440
 
-# define MOVE_SPEED 30
-# define ROT_SPEED 10
+# define MOVE_SPEED 10
+# define ROT_SPEED 5
 
 # define POS_X 20
 # define POS_Y 10

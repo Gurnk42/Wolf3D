@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:59:11 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/17 23:30:20 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 16:45:18 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,52 @@ void	ft_draw_line(t_point v0, t_point v1, int color, t_env *env)
 void			ft_draw(t_env *e)
 {
 	int	x;
-
+	int	y;
+	int	c;
 	x = 0;
 	while (x < WIN_WIDTH)
 	{
-		double cameraX = 2 * x / (double)WIN_WIDTH - 1;
-		double rayPosX = e->p.pos.x;
-		double rayPosY = e->p.pos.y;
-		double rayDirX = e->p.dir.x + e->p.cam.x * cameraX;
-		double rayDirY = e->p.dir.y + e->p.cam.y * cameraX;
-
-		int mapX = (int)(rayPosX);
-		int mapY = (int)(rayPosY);
-
-		double sideDistX;
-		double sideDistY;
-
-		double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
-		double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
-		double perpWallDist;
-
-		int stepX;
-		int stepY;
-
-		int hit = 0;
-		int side;
+		y = 0;
+		while (y < WIN_HEIGHT)
+		{
+			if (y < WIN_HEIGHT / 2.0)
+			{
+				c = 0x0000ff;
+				ft_draw_point((t_point){x, y}, c, e);
+			}
+			else
+			{
+				c = 0xffffff;
+				int r = ((c >> 16 ) & 0xFF) - ((y - WIN_HEIGHT / 2));
+				int g = ((c >> 8 ) & 0xFF) - ((y - WIN_HEIGHT / 2));
+				int b = (c & 0xFF) - ((y - WIN_HEIGHT / 2));
+				c = (((r > 0) ? 255 - r : 255) << 16)
+					+ (((g > 0) ? 255 - g : 255) << 8) + ((b > 0) ? 255 - b : 255);
+				ft_draw_point((t_point){x, y}, c, e);
+			}
+			y++;
+		}
+		x++;
+	}
+	x = 0;
+	while (x < WIN_WIDTH)
+	{
+		double	cameraX = 2 * x / (double)WIN_WIDTH - 1;
+		double	rayPosX = e->p.pos.x;
+		double	rayPosY = e->p.pos.y;
+		double	rayDirX = e->p.dir.x + e->p.cam.x * cameraX;
+		double	rayDirY = e->p.dir.y + e->p.cam.y * cameraX;
+		int		mapX = (int)(rayPosX);
+		int		mapY = (int)(rayPosY);
+		double	sideDistX;
+		double	sideDistY;
+		double	deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+		double	deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+		double	perpWallDist;
+		int		stepX;
+		int		stepY;
+		int		hit = 0;
+		int		side;
 
 
 		if (rayDirX < 0)
@@ -89,6 +110,7 @@ void			ft_draw(t_env *e)
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
 		}
+		int		dist = 0;
 		while (hit == 0)
 		{
 			if (sideDistX < sideDistY)
@@ -105,43 +127,34 @@ void			ft_draw(t_env *e)
 			}
 			if (e->map[mapX][mapY] > 0)
 				hit = 1;
+			dist++;
 		}
-
 		if (side == 0)
 			perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;
 		else
 			perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;
 
 		int lineHeight = (int)(WIN_HEIGHT / perpWallDist);
-
 		int drawStart = -lineHeight / 2 + WIN_HEIGHT / 2;
-		if(drawStart < 0)drawStart = 0;
+		if (drawStart < 0)
+			drawStart = 0;
 		int drawEnd = lineHeight / 2 + WIN_HEIGHT / 2;
-		if(drawEnd >= WIN_HEIGHT)drawEnd = WIN_HEIGHT - 1;
+		if (drawEnd >= WIN_HEIGHT)
+			drawEnd = WIN_HEIGHT - 1;
 
 		int	color;
-		switch(e->map[mapX][mapY])
-		{
-			case 1:  color = 0xff0000;  break;
-			case 2:  color = 0x00ff00;  break;
-			case 3:  color = 0x0000ff;   break;
-			case 4:  color = 0Xffffff;  break;
-			default: color = 0x00ffff; break;
-		}
-
-//		printf("DirX: '%f'\n", e->p.dir.x);
-//		printf("DirY: '%f'\n", e->p.dir.y);
-		//give x and y sides different brightness
+		if (e->map[mapX][mapY] == 1)
+			color = 0xff0000;
 		if (side == 1)
 		{
-			if (e->p.dir.y > 0)
-				color = 0xff0000;
-			else
-				color = 0x00ff00;
-			//printf("sideDistX : '%f'\n", sideDistX);
-			//printf("sideDistY : '%f'\n", sideDistY);
-			//color = color / 2;
+			color = 0x00ff00;
+			//color = (color & 0xfefefe) >> 1;
 		}
+
+		int r = ((color >> 16 ) & 0xFF) - (dist * 8);
+		int g = ((color >> 8 ) & 0xFF) - (dist * 8);
+		int b = (color & 0xFF) - (dist * 8);
+		color = (((r > 0) ? r : 0) << 16) + (((g > 0) ? g : 0) << 8) + ((b > 0) ? b : 0);
 
 		ft_draw_line((t_point){x, drawStart}, (t_point){x, drawEnd}, color, e);
 		x++;
@@ -149,7 +162,7 @@ void			ft_draw(t_env *e)
 	e->frame.previous = e->frame.current;
 	e->frame.current = (double)clock();
 	double frameTime = (e->frame.current - e->frame.previous) / CLOCKS_PER_SEC; 
-    printf("FPS: '%f'\n", (1.0 / frameTime));
+	printf("FPS: '%f'\n", (1.0 / frameTime));
 	e->p.speed.move = frameTime * MOVE_SPEED;
 	e->p.speed.rot = frameTime * ROT_SPEED;
 }
