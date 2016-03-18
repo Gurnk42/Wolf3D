@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:59:11 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/18 19:30:28 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 20:04:47 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void			ft_draw_floor_sky(t_env *e)
 			else
 			{
 				c = 0xb3b3b3;
-				int r = ((c >> 16 ) & 0xFF) - ((y - WIN_HEIGHT / 2));
-				int g = ((c >> 8 ) & 0xFF) - ((y - WIN_HEIGHT / 2));
-				int b = (c & 0xFF) - ((y - WIN_HEIGHT / 2));
+				int r = ((c >> 16 ) & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
+				int g = ((c >> 8 ) & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
+				int b = (c & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
 				c = (((r > 0) ? 255 - r : 255) << 16)
 					+ (((g > 0) ? 255 - g : 255) << 8) + ((b > 0) ? 255 - b : 255);
 				ft_draw_point((t_point){x, y}, c, e);
@@ -209,7 +209,6 @@ void			ft_draw(t_env *e)
 				color = 0x00ff00;
 		else if (side == 0 && rayDirX < 0)
 				color = 0xff0000;
-
 		int r = ((color >> 16 ) & 0xFF) - (dist * 8);
 		int g = ((color >> 8 ) & 0xFF) - (dist * 8);
 		int b = (color & 0xFF) - (dist * 8);
