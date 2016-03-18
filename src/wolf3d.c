@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:53:35 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/18 18:59:21 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 19:14:12 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ int				main(/*int argc, char **argv*/)
 
 	srand(time(NULL));
 	ft_draw_reload(&env);
-//	printf("BG : '%s'\n",ft_draw_floor_sky(&env));
 	//mlx_key_hook(env.win, ft_hook_key, &env);
 	//	ft_draw_reload(&env);
 	mlx_loop_hook(env.mlx, ft_draw_reload, &env);

@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:59:11 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/18 19:11:33 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/18 19:30:28 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,15 +200,15 @@ void			ft_draw(t_env *e)
 		int drawEnd = lineHeight / 2 + WIN_HEIGHT / 2;
 		if (drawEnd >= WIN_HEIGHT)
 			drawEnd = WIN_HEIGHT - 1;
-
 		int	color;
 		if (e->map[mapX][mapY] == 1)
-			color = 0xff0000;
-		if (side == 1)
-		{
-			color = 0x00ff00;
-			//color = (color & 0xfefefe) >> 1;
-		}
+			color = 0xffff00;
+		if (side == 1 && rayDirY < 0)
+				color = 0x0000ff;
+		else if (side == 0 && rayDirX > 0)
+				color = 0x00ff00;
+		else if (side == 0 && rayDirX < 0)
+				color = 0xff0000;
 
 		int r = ((color >> 16 ) & 0xFF) - (dist * 8);
 		int g = ((color >> 8 ) & 0xFF) - (dist * 8);
