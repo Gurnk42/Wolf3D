@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:54:42 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/19 18:53:17 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/19 19:06:11 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,27 @@ typedef struct s_env
 }				t_env;
 
 /*
- ** Draw.c:
- */
+** Draw.c:
+*/
 void			ft_draw_point(t_point point, int color, t_env *e);
 int				ft_draw_reload(t_env *e);
 void			ft_draw_floor_sky(t_env *e);
 
 /*
- ** Minimap.c
- */
+** Minimap.c
+*/
 void			ft_mini_map(t_env *e);
+
+/*
+** utils.c
+*/
+void			ft_draw_line(t_point v0, t_point v1, int color, t_env *env);
+void			ft_draw_floor_sky(t_env *e);
+void			ft_init_raycast(int x, t_ray_cast *r, t_env *e);
+
+/*
+** ray_cast.c
+*/
+void			ft_ray_cast_core(int x, t_env *e);
 
 #endif
