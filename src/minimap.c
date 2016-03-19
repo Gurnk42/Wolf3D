@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 16:06:46 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/19 18:53:17 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/19 19:35:40 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void		ft_draw_player(t_env *e)
 {
 	ft_draw_point((t_point){(int)e->p.pos.x * 4, (int)e->p.pos.y * 4},
 			0xff0000, e);
-	ft_draw_point((t_point){.x = (int)e->p.pos.x * 4 + 1, .y = (int)e->p.pos.y * 4},
+	ft_draw_point((t_point){(int)e->p.pos.x * 4 + 1, (int)e->p.pos.y * 4},
 			0xff0000, e);
 	ft_draw_point((t_point){(int)e->p.pos.x * 4, (int)e->p.pos.y * 4 + 1},
 			0xff0000, e);
@@ -66,4 +66,3 @@ void			ft_mini_map(t_env *e)
 	}
 	ft_draw_player(e);
 }
-

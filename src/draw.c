@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:59:11 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/19 19:11:52 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/19 19:34:22 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void			ft_draw(t_env *e)
 	}
 	e->frame.previous = e->frame.current;
 	e->frame.current = (double)clock();
-	frame_time = (e->frame.current - e->frame.previous) / CLOCKS_PER_SEC; 
+	frame_time = (e->frame.current - e->frame.previous) / CLOCKS_PER_SEC;
 	e->fps = ft_strjoin_free(ft_strdup("FPS: "), ft_itoa(1.0 / frame_time));
 	e->p.speed.move = frame_time * MOVE_SPEED;
 	e->p.speed.rot = frame_time * ROT_SPEED;

@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 18:56:11 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/19 19:03:58 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/19 19:43:36 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ void		ft_init_raycast(int x, t_ray_cast *r, t_env *e)
 	r->ray_dir.y = e->p.dir.y + e->p.cam.y * r->cam_x;
 	r->map.x = (int)(r->ray_pos.x);
 	r->map.y = (int)(r->ray_pos.y);
-	r->delta_dist.x = sqrt(1 + (r->ray_dir.y * r->ray_dir.y) / (r->ray_dir.x * r->ray_dir.x));
-	r->delta_dist.y = sqrt(1 + (r->ray_dir.x * r->ray_dir.x) / (r->ray_dir.y * r->ray_dir.y));
+	r->delta_dist.x = sqrt(1 + (r->ray_dir.y * r->ray_dir.y)
+			/ (r->ray_dir.x * r->ray_dir.x));
+	r->delta_dist.y = sqrt(1 + (r->ray_dir.x * r->ray_dir.x)
+			/ (r->ray_dir.y * r->ray_dir.y));
 }
 
-void	ft_draw_line(t_point v0, t_point v1, int color, t_env *env)
+void		ft_draw_line(t_point v0, t_point v1, int color, t_env *env)
 {
 	t_point		s;
 	t_point		d;
@@ -53,11 +55,47 @@ void	ft_draw_line(t_point v0, t_point v1, int color, t_env *env)
 	}
 }
 
-void			ft_draw_floor_sky(t_env *e)
+static void	ft_draw_sky(int x, int y, t_env *e)
+{
+	int	c;
+
+	c = 0x301860;
+	if (rand() % 20000 == 0)
+	{
+		ft_draw_point((t_point){x, y}, 0xffffe0, e);
+		ft_draw_point((t_point){x - 1, y}, 0xffffe0, e);
+		ft_draw_point((t_point){x, y - 1}, 0xffffe0, e);
+		ft_draw_point((t_point){x - 1, y - 1}, 0xffffe0, e);
+		ft_draw_point((t_point){x - 2, y}, 0xffffe0, e);
+		ft_draw_point((t_point){x, y - 2}, 0xffffe0, e);
+		ft_draw_point((t_point){x - 2, y - 2}, 0xffffe0, e);
+		ft_draw_point((t_point){x - 2, y - 1}, 0xffffe0, e);
+		ft_draw_point((t_point){x - 1, y - 2}, 0xffffe0, e);
+	}
+	else
+		ft_draw_point((t_point){x, y}, c, e);
+}
+
+static void	ft_draw_floor(int x, int y, t_env *e)
+{
+	int	r;
+	int	g;
+	int	b;
+	int	c;
+
+	c = 0xb3b3b3;
+	r = ((c >> 16) & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
+	g = ((c >> 8) & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
+	b = (c & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
+	c = (((r > 0) ? 255 - r : 255) << 16)
+		+ (((g > 0) ? 255 - g : 255) << 8) + ((b > 0) ? 255 - b : 255);
+	ft_draw_point((t_point){x, y}, c, e);
+}
+
+void		ft_draw_floor_sky(t_env *e)
 {
 	int	x;
 	int	y;
-	int	c;
 
 	x = 0;
 	while (x < WIN_WIDTH)
@@ -66,33 +104,9 @@ void			ft_draw_floor_sky(t_env *e)
 		while (y < WIN_HEIGHT)
 		{
 			if (y < WIN_HEIGHT / 2.0)
-			{
-				c = 0x301860;
-				if (rand() % 20000 == 0)
-				{
-					ft_draw_point((t_point){x, y}, 0xffffe0, e);
-					ft_draw_point((t_point){x - 1, y}, 0xffffe0, e);
-					ft_draw_point((t_point){x, y - 1}, 0xffffe0, e);
-					ft_draw_point((t_point){x - 1, y - 1}, 0xffffe0, e);
-					ft_draw_point((t_point){x - 2, y}, 0xffffe0, e);
-					ft_draw_point((t_point){x, y - 2}, 0xffffe0, e);
-					ft_draw_point((t_point){x - 2, y - 2}, 0xffffe0, e);
-					ft_draw_point((t_point){x - 2, y - 1}, 0xffffe0, e);
-					ft_draw_point((t_point){x - 1, y - 2}, 0xffffe0, e);
-				}
-				else
-					ft_draw_point((t_point){x, y}, c, e);
-			}
+				ft_draw_sky(x, y, e);
 			else
-			{
-				c = 0xb3b3b3;
-				int r = ((c >> 16 ) & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
-				int g = ((c >> 8 ) & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
-				int b = (c & 0xFF) - ((y - WIN_HEIGHT / 2) * 0.5);
-				c = (((r > 0) ? 255 - r : 255) << 16)
-					+ (((g > 0) ? 255 - g : 255) << 8) + ((b > 0) ? 255 - b : 255);
-				ft_draw_point((t_point){x, y}, c, e);
-			}
+				ft_draw_floor(x, y, e);
 			y++;
 		}
 		x++;
