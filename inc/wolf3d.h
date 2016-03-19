@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:54:42 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/18 18:43:12 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/19 18:53:17 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <time.h>
 # include <math.h>
 # include <mlx.h>
-# include <fcntl.h>
 
 # define WIN_WIDTH 1024//2560
 # define WIN_HEIGHT 720//1440
@@ -37,7 +36,6 @@
 # define DOWN_KEY 125
 # define UP_KEY 126
 
-#include <stdio.h>
 typedef union	u_color
 {
 	int			color;
@@ -84,6 +82,20 @@ typedef struct	s_frame
 	double		previous;
 }				t_frame;
 
+typedef struct	s_ray_cast
+{
+	double		cam_x;
+	t_point		ray_pos;
+	t_point		ray_dir;
+	t_point		map;
+	t_point		side_dist;
+	t_point		delta_dist;
+	t_point		step;
+	double		wall_dist;
+	int			hit;
+	int			side;
+}				t_ray_cast;
+
 typedef struct s_env
 {
 	char		*fps;
@@ -97,10 +109,15 @@ typedef struct s_env
 }				t_env;
 
 /*
-** Draw.c:
-*/
+ ** Draw.c:
+ */
 void			ft_draw_point(t_point point, int color, t_env *e);
 int				ft_draw_reload(t_env *e);
 void			ft_draw_floor_sky(t_env *e);
+
+/*
+ ** Minimap.c
+ */
+void			ft_mini_map(t_env *e);
 
 #endif

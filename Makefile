@@ -25,7 +25,8 @@ INC_DIR = ./inc/
 OBJ_DIR = ./obj/
 
 SRC_FILES =	wolf3d.c \
-			draw.c
+			draw.c \
+			minimap.c
 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 INC_FILES = wolf3d.h
