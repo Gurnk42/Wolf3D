@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:59:11 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/20 20:28:41 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 21:08:44 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int				ft_draw_reload(t_env *e)
 	ft_draw(e);
 	mlx_put_image_to_window(e->mlx, e->win, e->image.img, 0, 0);
 	mlx_string_put(e->mlx, e->win, WIN_WIDTH - 100, 10, 0xffffff, e->fps);
+	ft_strdel(&(e->fps));
 	if (e->p.compass == 0 || e->p.compass == 1)
 		mlx_string_put(e->mlx, e->win, WIN_WIDTH - 90, 30, 0xff0000,
 				e->p.compass == 0 ? "NORTH" : "EAST");
