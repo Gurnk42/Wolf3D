@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 19:44:45 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/20 18:56:00 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 20:36:39 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,12 @@ static int	ft_mouse_hook(int button, int x, int y, t_env *e)
 	(void)x;
 	(void)y;
 	if (e->p.compass == NORTH)
+		offset = (t_point){-2, 0};
+	else if (e->p.compass == SOUTH)
+		offset = (t_point){2, 0};
+	else if (e->p.compass == WEST)
+		offset = (t_point){0, -2};
+	else if (e->p.compass == EAST)
 		offset = (t_point){0, 2};
 	//printf("COMPASS: '%s'\n", e->p.compass == 1 );
 	//printf("DIR X: '%f' DIR Y: '%f'\n", e->p.dir.x, e->p.dir.y);

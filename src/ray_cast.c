@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 19:02:26 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/20 20:27:51 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 20:29:55 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ static int		ft_get_wall_color(int dist, t_ray_cast *r, t_env *e)
 	int	g;
 	int	b;
 
-	if (e->map[(int)r->map.x][(int)r->map.y] == 1) //&& (e->p.compass = EAST) == EAST)
+	if (e->map[(int)r->map.x][(int)r->map.y] == 1)
 		color = 0xffff00;
-	if (r->side == 1 && r->ray_dir.y < 0) //&& (e->p.compass = WEST) == WEST)
+	if (r->side == 1 && r->ray_dir.y < 0)
 		color = 0x0000ff;
-	else if (r->side == 0 && r->ray_dir.x > 0) //&& (e->p.compass = SOUTH) == SOUTH)
+	else if (r->side == 0 && r->ray_dir.x > 0)
 		color = 0x00ff00;
-	else if (r->side == 0 && r->ray_dir.x < 0) //&& (e->p.compass = NORTH) == NORTH)
+	else if (r->side == 0 && r->ray_dir.x < 0)
 		color = 0xff0000;
 	red = ((color >> 16) & 0xFF) - (dist * 8);
 	g = ((color >> 8) & 0xFF) - (dist * 8);
