@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 19:44:45 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/19 20:15:37 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 18:56:00 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,44 @@ int			ft_hook_key(int keycode, t_env *e)
 	return (0);
 }
 
+#include <stdio.h>
+static int	ft_mouse_hook(int button, int x, int y, t_env *e)
+{
+	t_point	offset;
+
+	(void)x;
+	(void)y;
+	if (e->p.compass == NORTH)
+		offset = (t_point){0, 2};
+	//printf("COMPASS: '%s'\n", e->p.compass == 1 );
+	//printf("DIR X: '%f' DIR Y: '%f'\n", e->p.dir.x, e->p.dir.y);
+	if ((int)e->p.pos.x + (int)offset.x < 24 && (int)e->p.pos.x + (int)offset.x > 0
+		&& (int)e->p.pos.y + (int)offset.y < 24 && (int)e->p.pos.y + (int)offset.y > 0)
+		e->map[(int)e->p.pos.x + (int)offset.x][(int)e->p.pos.y + (int)offset.y] = button == 1;
+	return (0);
+}
+
+static void	ft_init_map(t_env *e)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	while (x < 24)
+	{
+		y = 0;
+		while (y < 24)
+		{
+			if (x == 0 || y == 0 || x == 23 || y == 23)
+				e->map[x][y] = 1;
+			else
+				e->map[x][y] = 0;
+			y++;
+		}
+		x++;
+	}
+}
+
 int			main(void)
 {
 	t_env		env;
@@ -92,42 +130,15 @@ int			main(void)
 		return (-1);
 	if (!(env.win = mlx_new_window(env.mlx, WIN_WIDTH, WIN_HEIGHT, "Wolf3D")))
 		return (-1);
-	mlx_key_hook(env.win, ft_hook_key, &env);
-/*	uint8_t map[24][24] = {
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-	};*/
-	env.p = (t_player){{0, 0}, {POS_X, POS_Y}, {DIR_X, DIR_Y}, {CAM_X, CAM_Y}};
+	ft_init_map(&env);
+	env.p = (t_player){{0, 0}, {POS_X, POS_Y}, {DIR_X, DIR_Y}, {CAM_X, CAM_Y}, NORTH};
 	env.frame.current = 0;
 	env.frame.current = 0;
-	ft_memcpy(env.map, map, sizeof(map));
-
 	srand(time(NULL));
 	ft_draw_reload(&env);
 	mlx_loop_hook(env.mlx, ft_draw_reload, &env);
 	mlx_hook(env.win, 2, (1L << 0), ft_hook_key, &env);
+	mlx_mouse_hook(env.win, ft_mouse_hook, &env);
 	mlx_loop(env.mlx);
 	return (0);
 }

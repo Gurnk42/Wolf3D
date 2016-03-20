@@ -6,13 +6,13 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 19:02:26 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/19 19:37:24 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 20:27:51 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static void		ft_get_step(t_ray_cast *r)
+static void		ft_get_step(t_ray_cast *r, t_env *e)
 {
 	if (r->ray_dir.x < 0)
 	{
@@ -28,11 +28,13 @@ static void		ft_get_step(t_ray_cast *r)
 	{
 		r->step.y = -1;
 		r->side_dist.y = (r->ray_pos.y - r->map.y) * r->delta_dist.y;
+		e->p.compass = (r->ray_dir.x < 0) ? WEST : SOUTH;
 	}
 	else
 	{
 		r->step.y = 1;
 		r->side_dist.y = (r->map.y + 1.0 - r->ray_pos.y) * r->delta_dist.y;
+		e->p.compass = (r->ray_dir.x < 0) ? NORTH : EAST;
 	}
 }
 
@@ -69,13 +71,13 @@ static int		ft_get_wall_color(int dist, t_ray_cast *r, t_env *e)
 	int	g;
 	int	b;
 
-	if (e->map[(int)r->map.x][(int)r->map.y] == 1)
+	if (e->map[(int)r->map.x][(int)r->map.y] == 1) //&& (e->p.compass = EAST) == EAST)
 		color = 0xffff00;
-	if (r->side == 1 && r->ray_dir.y < 0)
+	if (r->side == 1 && r->ray_dir.y < 0) //&& (e->p.compass = WEST) == WEST)
 		color = 0x0000ff;
-	else if (r->side == 0 && r->ray_dir.x > 0)
+	else if (r->side == 0 && r->ray_dir.x > 0) //&& (e->p.compass = SOUTH) == SOUTH)
 		color = 0x00ff00;
-	else if (r->side == 0 && r->ray_dir.x < 0)
+	else if (r->side == 0 && r->ray_dir.x < 0) //&& (e->p.compass = NORTH) == NORTH)
 		color = 0xff0000;
 	red = ((color >> 16) & 0xFF) - (dist * 8);
 	g = ((color >> 8) & 0xFF) - (dist * 8);
@@ -112,9 +114,9 @@ void			ft_ray_cast_core(int x, t_env *e)
 	int			end;
 
 	ft_init_raycast(x, &r, e);
-	ft_get_step(&r);
+	ft_get_step(&r, e);
 	dist = ft_get_nearest_wall(&r, e);
 	ft_get_wall_projection(&start, &end, &r);
 	ft_draw_line((t_point){x, start}, (t_point){x, end},
-			ft_get_wall_color(dist, &r, e), e);
+		ft_get_wall_color(dist, &r, e), e);
 }

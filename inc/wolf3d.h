@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:54:42 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/19 19:52:47 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 17:18:22 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@
 # define DOWN_KEY 125
 # define UP_KEY 126
 
+typedef enum	e_compass
+{
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST
+}				t_compass;
+
+typedef enum	e_bool
+{
+	true,
+	false
+}			t_bool;
+
 typedef union	u_color
 {
 	int			color;
@@ -62,6 +76,7 @@ typedef struct	s_player
 	t_point		pos;
 	t_point		dir;
 	t_point		cam;
+	t_compass	compass;
 }				t_player;
 
 typedef struct	s_img
