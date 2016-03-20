@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/19 19:44:45 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/20 20:36:39 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 20:58:26 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,41 +72,6 @@ void		ft_move(int keycode, t_env *e)
 	}
 }
 
-int			ft_hook_key(int keycode, t_env *e)
-{
-	if (keycode == 53)
-		exit(0);
-	else if (keycode == LEFT_KEY
-			|| keycode == RIGHT_KEY
-			|| keycode == DOWN_KEY
-			|| keycode == UP_KEY)
-		ft_move(keycode, e);
-	return (0);
-}
-
-#include <stdio.h>
-static int	ft_mouse_hook(int button, int x, int y, t_env *e)
-{
-	t_point	offset;
-
-	(void)x;
-	(void)y;
-	if (e->p.compass == NORTH)
-		offset = (t_point){-2, 0};
-	else if (e->p.compass == SOUTH)
-		offset = (t_point){2, 0};
-	else if (e->p.compass == WEST)
-		offset = (t_point){0, -2};
-	else if (e->p.compass == EAST)
-		offset = (t_point){0, 2};
-	//printf("COMPASS: '%s'\n", e->p.compass == 1 );
-	//printf("DIR X: '%f' DIR Y: '%f'\n", e->p.dir.x, e->p.dir.y);
-	if ((int)e->p.pos.x + (int)offset.x < 24 && (int)e->p.pos.x + (int)offset.x > 0
-		&& (int)e->p.pos.y + (int)offset.y < 24 && (int)e->p.pos.y + (int)offset.y > 0)
-		e->map[(int)e->p.pos.x + (int)offset.x][(int)e->p.pos.y + (int)offset.y] = button == 1;
-	return (0);
-}
-
 static void	ft_init_map(t_env *e)
 {
 	int	x;
@@ -137,7 +102,8 @@ int			main(void)
 	if (!(env.win = mlx_new_window(env.mlx, WIN_WIDTH, WIN_HEIGHT, "Wolf3D")))
 		return (-1);
 	ft_init_map(&env);
-	env.p = (t_player){{0, 0}, {POS_X, POS_Y}, {DIR_X, DIR_Y}, {CAM_X, CAM_Y}, NORTH};
+	env.p = (t_player){{0, 0}, {POS_X, POS_Y}, {DIR_X, DIR_Y},
+		{CAM_X, CAM_Y}, NORTH};
 	env.frame.current = 0;
 	env.frame.current = 0;
 	srand(time(NULL));

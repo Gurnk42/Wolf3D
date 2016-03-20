@@ -28,6 +28,7 @@ SRC_FILES =	wolf3d.c \
 			draw.c \
 			minimap.c \
 			ray_cast.c \
+			hook.c \
 			utils.c
 
 OBJ_FILES = $(SRC_FILES:.c=.o)

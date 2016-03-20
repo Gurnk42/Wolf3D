@@ -6,7 +6,7 @@
 /*   By: ebouther <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 11:54:42 by ebouther          #+#    #+#             */
-/*   Updated: 2016/03/20 17:18:22 by ebouther         ###   ########.fr       */
+/*   Updated: 2016/03/20 20:59:28 by ebouther         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <math.h>
 # include <mlx.h>
 
-# define WIN_WIDTH 1024//2560
-# define WIN_HEIGHT 720//1440
+# define WIN_WIDTH 1024
+# define WIN_HEIGHT 720
 
 # define MOVE_SPEED 10
 # define ROT_SPEED 5
@@ -43,12 +43,6 @@ typedef enum	e_compass
 	SOUTH,
 	WEST
 }				t_compass;
-
-typedef enum	e_bool
-{
-	true,
-	false
-}			t_bool;
 
 typedef union	u_color
 {
@@ -111,7 +105,7 @@ typedef struct	s_ray_cast
 	int			side;
 }				t_ray_cast;
 
-typedef struct s_env
+typedef struct	s_env
 {
 	char		*fps;
 	char		*background;
@@ -122,6 +116,11 @@ typedef struct s_env
 	t_player	p;
 	t_frame		frame;
 }				t_env;
+
+/*
+** Wolf3d.c
+*/
+void			ft_move(int keycode, t_env *e);
 
 /*
 ** Draw.c:
@@ -146,5 +145,11 @@ void			ft_init_raycast(int x, t_ray_cast *r, t_env *e);
 ** ray_cast.c
 */
 void			ft_ray_cast_core(int x, t_env *e);
+
+/*
+** hook.c
+*/
+int				ft_hook_key(int keycode, t_env *e);
+int				ft_mouse_hook(int button, int x, int y, t_env *e);
 
 #endif
